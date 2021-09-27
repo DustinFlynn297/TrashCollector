@@ -5,6 +5,7 @@ from django.apps import apps
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
+import calendar
 
 
 from .models import Employee
@@ -21,11 +22,16 @@ def index(request):
         logged_in_employee = Employee.objects.get(user=logged_in_user)
 
         today = date.today()
+        weekday = calendar.day_name[today.weekday()]
 
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
         }
+
+        Customer = apps.get_model('customers.Customer')
+        deliveries = Customer.objects.filter(weekly_pickup=weekday)
+
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:create'))   
