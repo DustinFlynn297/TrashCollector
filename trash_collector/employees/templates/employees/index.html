@@ -10,8 +10,8 @@
     <br>
     <ul>
       <h2>Scheduled Trash Pickups for {{weekday}} | {{today}} </h2>
-      {% for delivery in deliveries %}
-      <li><h4>{{delivery.name}} | {{delivery.address}}, {{delivery.zip_code}}</h4>
+      {% for customer in scheduled_pickup %}
+      <li><h4>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}</h4>
       </li>
       {% endfor %}
     </ul>

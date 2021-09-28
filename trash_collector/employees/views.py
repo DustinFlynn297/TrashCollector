@@ -26,15 +26,15 @@ def index(request):
 
         Customer = apps.get_model('customers.Customer')
         customers = Customer.objects.filter(zip_code=logged_in_employee.zip_code)
-        deliveries_regular = customers.filter(weekly_pickup=weekday)
-        deliveries_one_time = customers.filter(one_time_pickup=today)
-        deliveries = deliveries_one_time | deliveries_regular
+        pickup_regular = customers.filter(weekly_pickup=weekday)
+        pickup_one_time = customers.filter(one_time_pickup=today)
+        scheduled_pickup = pickup_one_time | pickup_regular
 
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
             'weekday' : weekday,
-            'deliveries' : deliveries
+            'scheduled_pickup' : scheduled_pickup
         }
         return render(request, 'employees/index.html', context)
 
