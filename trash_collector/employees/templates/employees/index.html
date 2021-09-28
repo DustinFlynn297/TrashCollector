@@ -8,14 +8,23 @@
 
     <br>
     <br>
-    <ul>
-      <h2>Scheduled Trash Pickups for {{weekday}} | {{today}} </h2>
-      {% for customer in scheduled_pickup %}
-      <li><h4>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}         
-          <a href="{% url 'employees:trash_picked_up' customer.id %}"><button type="button">Confirm</button> </a> </h4>                   
-      </li>
-      {% endfor %}
-    </ul>
+    
+    <table class="employee-customer-tb">
+      <tbody>
+        {% for customer in scheduled_pickup %}
+        <tr>
+          <!-- Row - Customer Info -->
+          <th scope="row"></th>
+          <td>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}</td>
+          <td>
+            <a href="{% url 'employees:trash_picked_up' customer.id %}"><button type="button">Confirm</button></a>                   
+          </td>
+        </tr>
+      </tbody>
+        {% endfor %}
+    </table>
+
+
 
     <form action="{% url 'employees:filter_by_day' %}" method='post'>
       {% csrf_token %}
@@ -32,14 +41,21 @@
       <br><br>
       <input type="submit" value="Submit">
     </form>
+    
     {% if filter_by_day != '' %}
     <ul>
       <h2>Scheduled Trash Pickups for {{weekday}} | {{today}} </h2>
-      {% for customer in filter_customers %}
-      <li><h4>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}  </h4>                   
-      </li>
-      {% endfor %}
-    </ul>
+      <table class="employee-customer-tb">
+        <tbody>
+          {% for customer in filter_customers %}
+          <tr>
+            <!-- Row - Customer Info -->
+            <th scope="row"></th>
+            <td>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}</td>
+          </tr>
+        </tbody>
+          {% endfor %}
+      </table>
     {% endif %}
 
   {% else %}
