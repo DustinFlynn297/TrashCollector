@@ -33,6 +33,7 @@ def index(request):
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
+            'weekday' : weekday,
             'deliveries' : deliveries
         }
         return render(request, 'employees/index.html', context)
