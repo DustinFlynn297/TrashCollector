@@ -4,15 +4,17 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-    Hello Employee {{ user.username }} | {{today}}! 
+    Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee.zip_code}}
 
+    <br>
+    <br>
     <ul>
+      <h2>Scheduled Trash Pickups for {{weekday}} | {{today}} </h2>
       {% for delivery in deliveries %}
-      <li><h2>{{delivery.name}}</h2>
+      <li><h4>{{delivery.name}} | {{delivery.address}}, {{delivery.zip_code}}</h4>
       </li>
       {% endfor %}
     </ul>
-
 
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
