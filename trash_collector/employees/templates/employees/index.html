@@ -3,7 +3,7 @@
 {% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated %}
+  {% if user.is_authenticated %}  
     Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee.zip_code}}
 
     <br>
@@ -11,7 +11,8 @@
     <ul>
       <h2>Scheduled Trash Pickups for {{weekday}} | {{today}} </h2>
       {% for customer in scheduled_pickup %}
-      <li><h4>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}</h4>
+      <li><h4>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}         
+          <a href="{% url 'employees:trash_picked_up' customer.id %}"><button type="button">Confirm</button> </a> </h4>                   
       </li>
       {% endfor %}
     </ul>

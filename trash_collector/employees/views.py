@@ -31,6 +31,7 @@ def index(request):
         pickup_one_time = customers.filter(one_time_pickup=today)
         scheduled_pickup = pickup_one_time | pickup_regular
         scheduled_pickup = scheduled_pickup.exclude (Q(suspend_start__lte=today) & Q(suspend_end__gte=today))
+        scheduled_pickup = scheduled_pickup.exclude(date_of_last_pickup=today)
         
 
         context = {
@@ -72,3 +73,17 @@ def edit_profile(request):
             'logged_in_employee': logged_in_employee
         }
         return render(request, 'employees/edit_profile.html', context)
+
+@login_required
+def trash_picked_up(request, customer_id):
+    logged_in_user = request.user
+    logged_in_employee = Employee.objects.get(user=logged_in_user)    
+    Customer = apps.get_model('customers.Customer')
+    confirmed_customer = Customer.objects.get(pk=customer_id)
+    confirmed_customer.balance += 20
+    confirmed_customer.date_of_last_pickup = date.today()
+    confirmed_customer.save()
+    return HttpResponseRedirect(reverse('employees:index'))
+    
+
+
