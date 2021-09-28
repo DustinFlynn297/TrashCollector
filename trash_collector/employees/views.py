@@ -5,6 +5,7 @@ from django.apps import apps
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
+from django.db.models import Q
 import calendar
 
 
@@ -29,6 +30,8 @@ def index(request):
         pickup_regular = customers.filter(weekly_pickup=weekday)
         pickup_one_time = customers.filter(one_time_pickup=today)
         scheduled_pickup = pickup_one_time | pickup_regular
+        scheduled_pickup = scheduled_pickup.exclude (Q(suspend_start__lte=today) & Q(suspend_end__gte=today))
+        
 
         context = {
             'logged_in_employee': logged_in_employee,
