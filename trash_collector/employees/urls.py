@@ -9,5 +9,6 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('new/', views.create, name='create'),
     path('edit_profile/', views.edit_profile, name="edit_profile"),
-    path('trash_picked_up/<int:customer_id>/', views.trash_picked_up, name="trash_picked_up")
+    path('trash_picked_up/<int:customer_id>/', views.trash_picked_up, name="trash_picked_up"),
+    path('filter_by_day/', views.filter_by_day, name="filter_by_day"),
 ]
