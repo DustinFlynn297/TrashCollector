@@ -24,20 +24,21 @@ def index(request):
         today = date.today()
         weekday = calendar.day_name[today.weekday()]
 
+        Customer = apps.get_model('customers.Customer')
+        customers = Customer.objects.filter(zip_code=logged_in_employee.zip_code)
+        deliveries_regular = customers.filter(weekly_pickup=weekday)
+        deliveries_one_time = customers.filter(one_time_pickup=today)
+        deliveries = deliveries_one_time | deliveries_regular
+
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
+            'deliveries' : deliveries
         }
-
-        Customer = apps.get_model('customers.Customer')
-        deliveries = Customer.objects.filter(weekly_pickup=weekday)
-
         return render(request, 'employees/index.html', context)
+
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:create'))   
-
-    Customer = apps.get_model('customers.Customer')
-    return render(request, 'employees/index.html')
 
 @login_required
 def create(request):
