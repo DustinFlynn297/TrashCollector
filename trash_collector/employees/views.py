@@ -101,13 +101,22 @@ def filter_by_day(request):
             'weekday': weekday,
             'today': today
         }
-        return HttpResponseRedirect(reverse('employees:filter_by_day'))
-        
+        return render(request, 'employees/filter_by_day.html', context)
+
     else:
         context = {
             'logged_in_employee' : logged_in_employee
         }
         return render(request, 'employees/filter_by_day.html', context)
-    
 
+@login_required
+def customer_info(request, customer_id):
+    try:
+        customer = Customer.objects.get(pk=customer_id)
+        context = {
+            'customer' : customer
+        }
+        return render(request, 'employees/customer_info.html', context )
 
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse('employees:index'))
