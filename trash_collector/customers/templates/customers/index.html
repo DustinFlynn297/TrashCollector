@@ -6,22 +6,85 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-        Hello {{ logged_in_customer.name }}!<br />
-        Address: {{ logged_in_customer.address }} {{logged_in_customer.zip_code }}<br />
-        Current balance: $ {{ logged_in_customer.balance }}.00
-        <br />
-        <br />
-        Your Weekly Pickup Day: {{ logged_in_customer.weekly_pickup }}
-        <br />
-        <br />
-        {% if logged_in_customer.one_time_pickup %}
-          You have an extra pickup scheduled for {{ logged_in_customer.one_time_pickup }}
+        <h5>Hello, {{ logged_in_customer.name }}<br></h5>
+        {% if logged_in_customer.balance <= 0 %}
+        <h5><span class="badge bg-success">Current balance: $ {{ logged_in_customer.balance }}.00</span></h3>
+        {% elif logged_in_customer.balance > 0 %}
+        <span class="badge bg-warning">Current balance: $ {{ logged_in_customer.balance }}.00</span>
         {% endif %}
         <br />
         <br />
         {% if today > logged_in_customer.suspend_start and today < logged_in_customer.suspend_end %}
-          Your pickups are suspended until {{ logged_in_customer.suspend_end }}
+        <div class="alert alert-dismissible fade show alert-warning" role="alert">
+          <strong>Reminder:</strong> Your pickups are suspended until <strong>{{ logged_in_customer.suspend_end }}</strong></a>.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        </div>
         {% endif %}
+        <br>
+    
+        <!--? Creates a table of customers with pickups scheduled -->
+    <table class="table table-hover table-dark text-center">
+      <caption>
+        <a href="{% url 'customers:edit_profile' %}">
+        <button type="button" class="btn btn-lg btn-dark">Edit Profile</button>
+        </a>
+      </caption>
+      <thead>
+        <th scope="col">Your Address</th>
+        <th scope="col">Weekly Pickup</th>
+        <th scope="col">Extra Pickup</th>
+      </thead>
+
+      <!--? For each customer in scheduled_pickup populate row with data -->
+      <tbody>
+        <tr>
+          <td>{{logged_in_customer.address}} {{customer.zip_code}}</td>
+          <td>{{logged_in_customer.weekly_pickup}}</td>
+          {% if logged_in_customer.one_time_pickup  %}
+            <td>{{logged_in_customer.one_time_pickup}}</td>
+          {% else %}
+            <td>N/A</td>
+          {% endif %}
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card text-white bg-primary mb-3" style="max-width: 50rem; min-height: 22rem;">
+            <div class="card-header"><h5>Schedule An Extra Pickup</h5></div>
+            <div class="card-body">
+              <p class="card-text"><form action="{% url 'customers:one_time' %}" method="post">
+                {% csrf_token %}
+                Date of Pick Up: <input type="date" name="date" id="date" class="form-control color-light">
+                <br>
+                <br>
+                <input type="submit" value="Submit" class="btn form-control btn-success">
+            </form></p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card text-white bg-primary mb-3" style="max-width: 50rem; min-height: 22rem;">
+            <div class="card-header"><h5>Suspend Service</h5></div>
+            <div class="card-body">
+              <p class="card-text"><form action="{% url 'customers:suspend' %}" method="post">
+                {% csrf_token %}
+                Start Date: <input type="date" name="start" id="start" class="form-control">
+                <br />
+                End Date: <input type="date" name="end" id="end" class="form-control">
+                <br />
+                <br />
+                <input type="submit" value="Submit" class="btn form-control btn-success">
+            </form>
+            </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    
 
   {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
