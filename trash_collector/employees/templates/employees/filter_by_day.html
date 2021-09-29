@@ -1,0 +1,53 @@
+{% extends 'employees\employee_base.html' %}
+
+{% block title %} Filter Customers {% endblock %}
+
+{% block header %} Filter Customer Scheduled Pickups by Weekday {% endblock %}
+
+{% block content %}
+  {% if user.is_authenticated %}  
+    {{ logged_in_employee.name}} | Team Zip-Code: {{logged_in_employee.zip_code}}
+    <br>
+    <br>
+    <h2> Filter Scheduled Trash Pickups for {{weekday}}</h2>
+    <br>
+
+    <!-- TODO: Create seperate page for filter | filtered_customers.html -->
+    <h2>Filter Customer Scheduled Pickups by Weekday:</h2>
+    <p>Please select a weekeday from the dropdown list to view customers who have pickups scheduled</p>
+    <!-- TODO: Change to dropdown instead of select -->
+    <form action="{% url 'employees:filter_by_day' %}" method='post'>
+      {% csrf_token %}
+      <label for="Weekday">Choose a day:</label>
+      <select name="Weekday" id="Weekday">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wedesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+      <br><br>
+      <input type="submit" value="Submit">
+    </form>
+    
+    {% if filter_by_day != '' %}
+    <ul>
+      <table class="employee-customer-tb">
+        <tbody>
+          {% for customer in filter_customers %}
+            <th scope="row"></th>
+            <td>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}</td>
+          </tr>
+        </tbody>
+          {% endfor %}
+      </table>
+    {% endif %}
+
+  {% else %}
+    <p>You are at the employee index, but you are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'accounts:register' %}">Sign Up</a>
+  {% endif %}
+{% endblock %}

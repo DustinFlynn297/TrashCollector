@@ -17,9 +17,7 @@
         <th scope="col">Customer Address</th>
 
         <!-- TODO: Add customer profile -->
-        <!-- {% comment "col customer info" %}
         <th scope="col">Customer Info</th>
-        {% endcomment %} -->
 
         <th scope="col">Confirm Pickup</th>
       </thead>
@@ -30,13 +28,11 @@
         <td>{{customer.address}} {{customer.zip_code}}</td>
 
         <!-- TODO: Add link to customer profile -->
-        <!-- {% comment 'table - link to customer profile' %}
         <td>
-          <a href="{% url 'employees:customer_info' customer.id %}">
+          <a href="{% url 'employees:trash_picked_up' customer.id %}">
             <i class="fas fa-address-card fa-3x"></i>
           </a>
         </td>
-        {% endcomment %} -->
 
         <td>
           <a href="{% url 'employees:trash_picked_up' customer.id %}">
@@ -71,18 +67,7 @@
       <input type="submit" value="Submit">
     </form>
     
-    {% if filter_by_day != '' %}
-    <ul>
-      <table class="employee-customer-tb">
-        <tbody>
-          {% for customer in filter_customers %}
-            <th scope="row"></th>
-            <td>{{customer.name}} | {{customer.address}}, {{customer.zip_code}}</td>
-          </tr>
-        </tbody>
-          {% endfor %}
-      </table>
-    {% endif %}
+    
 
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>

@@ -101,9 +101,13 @@ def filter_by_day(request):
             'weekday': weekday,
             'today': today
         }
-        return render(request, 'employees/index.html', context)
+        return HttpResponseRedirect(reverse('employees:filter_by_day'))
+        
     else:
-        return HttpResponseRedirect(reverse('employees:index'))
+        context = {
+            'logged_in_employee' : logged_in_employee
+        }
+        return render(request, 'employees/filter_by_day.html', context)
     
 
 
