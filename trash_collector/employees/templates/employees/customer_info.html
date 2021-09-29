@@ -1,0 +1,23 @@
+{% extends 'employees\employee_base.html' %}
+
+{% block title %} Customer Info {% endblock %}
+
+{% block header %} Customer: {{customer.name}} {% endblock %}
+
+{% block content %}
+  {% if user.is_authenticated %}  
+
+    Name: {{customer.name}}
+    <br>
+    Address: {{customer.address}} {{customer.zip_code}}
+    <br>
+    Balance: ${{customer.balance}}
+
+    
+
+  {% else %}
+    <p>You are at the employee index, but you are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'accounts:register' %}">Sign Up</a>
+  {% endif %}
+{% endblock %}
