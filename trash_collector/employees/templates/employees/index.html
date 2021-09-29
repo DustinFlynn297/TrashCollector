@@ -26,15 +26,14 @@
         <tr>{% for customer in scheduled_pickup %}</tr>
         <td>{{customer.name}}</td>
         <td>{{customer.address}} {{customer.zip_code}}</td>
-
-        <!-- TODO: Add link to customer profile -->
         <td>
-          <a href="{% url 'employees:trash_picked_up' customer.id %}">
+          <!-- Link to customer info -->
+          <a href="{% url 'employees:customer_info' customer.id %}">
             <i class="fas fa-address-card fa-3x"></i>
           </a>
         </td>
-
         <td>
+          <!-- Button to confirm pickup  -->
           <a href="{% url 'employees:trash_picked_up' customer.id %}">
           <button type="button" class="btn btn-m btn-success">Confirm</button>
           </a>
@@ -43,32 +42,6 @@
       {% endfor %}
     </table>
     <br>
-    
-    <!-- TODO: Create seperate page for selected customer info + map| customer_info.html -->
-    <!-- TODO: Create seperate page for all customers + map | my_customers.html  -->
-
-    <!-- TODO: Create seperate page for filter | filtered_customers.html -->
-    <h2>Filter Customer Scheduled Pickups by Weekday:</h2>
-    <p>Please select a weekeday from the dropdown list to view customers who have pickups scheduled</p>
-    <!-- TODO: Change to dropdown instead of select -->
-    <form action="{% url 'employees:filter_by_day' %}" method='post'>
-      {% csrf_token %}
-      <label for="Weekday">Choose a day:</label>
-      <select name="Weekday" id="Weekday">
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wedesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-        <option value="Sunday">Sunday</option>
-      </select>
-      <br><br>
-      <input type="submit" value="Submit">
-    </form>
-    
-    
-
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
