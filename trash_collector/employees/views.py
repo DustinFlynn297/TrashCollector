@@ -6,12 +6,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.db.models import Q
+from django.conf import settings
 import calendar
+import googlemaps
 
 
 
 from .models import Employee
 Customer = apps.get_model('customers.Customer')
+gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
 # Create your views here.
 
 # TODO: Create a function for each path created in employees/urls.py. Each will need a template as well.
@@ -120,3 +123,6 @@ def customer_info(request, customer_id):
 
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:index'))
+
+
+        

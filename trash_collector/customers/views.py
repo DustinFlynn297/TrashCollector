@@ -4,8 +4,11 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
-
+import googlemaps
 from .models import Customer
+from django.conf import settings
+
+gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
 
 @login_required
 def index(request):
@@ -30,10 +33,13 @@ def create(request):
     logged_in_user = request.user
     if request.method == "POST":
         name_from_form = request.POST.get('name')
-        address_from_form = request.POST.get('address')
+        address_from_form = request.POST.get('address')        
         zip_from_form = request.POST.get('zip_code')
         weekly_from_form = request.POST.get('weekly_pickup')
-        new_customer = Customer(name=name_from_form, user=logged_in_user, address=address_from_form, zip_code=zip_from_form, weekly_pickup=weekly_from_form)
+        geo_address = customer_geo(address_from_form, zip_from_form)
+        geo_lat = geo_address.lat
+        geo_long = geo_address.lng
+        new_customer = Customer(name=name_from_form, user=logged_in_user, address=geo_address, lat=geo_lat, long=geo_long, zip_code=zip_from_form, weekly_pickup=weekly_from_form)
         new_customer.save()
         return HttpResponseRedirect(reverse('customers:index'))
     else:
@@ -89,3 +95,9 @@ def edit_profile(request):
             'logged_in_customer': logged_in_customer
         }
         return render(request, 'customers/edit_profile.html', context)
+
+@login_required
+def customer_geo( address, zip_code):        
+        full_address = address + zip_code
+        geocode_result = gmaps.geocode(full_address)
+        return geocode_result   
