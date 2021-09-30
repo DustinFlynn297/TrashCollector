@@ -1,6 +1,6 @@
 {% extends 'customers\customer_base.html' %}
 
-{% block title %} Customer Home {% endblock %}
+{% block title %} GW Portal | Customer {% endblock %}
 
 {% block header %} Customer Portal {% endblock %}
 
@@ -8,9 +8,9 @@
   {% if user.is_authenticated %}
     <h4>Hello, {{ logged_in_customer.name }}<br></h4>
     {% if logged_in_customer.balance <= 0 %}
-      <h5><span class="badge bg-success">Current balance: $ {{ logged_in_customer.balance }}.00</span></h3>
+      <h5><span class="badge bg-success">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h3>
     {% elif logged_in_customer.balance > 0 %}
-      <h5><span class="badge bg-warning">Current balance: $ {{ logged_in_customer.balance }}.00</span></h5>
+      <h5><span class="badge bg-warning">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
     {% endif %}
     <br>
     <!-- Display baddge w/customer balance: if $0 color green | else color warning w/balance -->
@@ -35,7 +35,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>{{logged_in_customer.address}} {{customer.zip_code}}</td>
+          <td>{{logged_in_customer.address}} {{logged_in_customer.zip_code}}</td>
           <td>{{logged_in_customer.weekly_pickup}}'s</td>
           <!-- If true print pickup else print N/A -->
           {% if logged_in_customer.date_of_last_pickup  %}
