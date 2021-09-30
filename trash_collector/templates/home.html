@@ -1,22 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %} Trash Collector {% endblock %}
 
-{% block header %} Trash Collector {% endblock %}
+{% block title %} Home | GreenWorks {% endblock %}
+
 
 {% block content %}
-<br />
-<br />
-<br />
-<br />
+<h1><i class="fab fa-goodreads fa-m text-success p-2"> Green<span class="text-white">Works</span></i></h1>
+<h6>Efficient Recycling Service</h6>
+
 {% if user.is_authenticated %}
   Hello {{ user.username }}. You don't have a group assigned. Please contact administrator or attempt to register again.
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
+  <p><a href="{% url 'logout' %}" class="btn btn-primary">Log Out</a></p>
 {% else %}
   <p>You are not logged in. Please log in or create an account.</p>
-  <a href="{% url 'login' %}">Log In</a>
-  <a href="{% url 'accounts:register' %}">Sign Up</a>
+  <a href="{% url 'login' %}" class="btn btn btn-success m-3">Log In</a>
+  <a href="{% url 'accounts:register' %}" class="btn btn-primary">Sign Up</a>
 {% endif %}
+<br>
+<br>
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://images.unsplash.com/photo-1574974671999-24b7dfbb0d53?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=870&q=80" class="d-block w-85 img-fluid" alt="Employees Picking Up">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1528323273322-d81458248d40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=929&q=80" class="d-block w-85 img-fluid" alt="Storage Area">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1557344252-4d5c9909579c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1032&q=80" class="d-block w-85 img-fluid" alt="Employee Working">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
 {% endblock %}
 
 {# This is the home page that allows a logged out user to register or log in #}
