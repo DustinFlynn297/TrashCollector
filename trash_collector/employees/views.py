@@ -117,16 +117,12 @@ def customer_info(request, customer_id):
     try:
         customer = Customer.objects.get(pk=customer_id)
         api_key = settings.GOOGLE_API_KEY
-        url = f"https://maps.googleapis.com/maps/api/js?key={api_key}=initMap&libraries=&v=weekly"
         context = {
             'customer' : customer,
             'api_key' : api_key,
-            'url' : url,
         }
         return render(request, 'employees/customer_info.html', context )
 
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:index'))
-
-
         

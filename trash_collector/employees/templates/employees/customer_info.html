@@ -13,11 +13,10 @@ Address: {{customer.address}} {{customer.zip_code}}
 <br>
 Balance: ${{customer.balance}}
 
-
   <style type="text/css">
     /* Set the size of the div element that contains the map */
     #map {
-      height: 400px;
+      height: 25rem;
       /* The height is 400 pixels */
       width: 80%;
       /* The width is the width of the web page */
@@ -40,13 +39,14 @@ Balance: ${{customer.balance}}
       });
     }
   </script>
-  <h3>My Google Maps Demo</h3>
   <!--The div element for the map -->
+  <br>
+  <br>
   <div id="map"></div>
 
   <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
   <script
-    src="https://maps.googleapis.com/maps/api/js?key={KEY-HERE}=&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly"
     async
   ></script>
 
