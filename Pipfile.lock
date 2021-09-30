@@ -36,9 +36,7 @@
                 "sha256:5d209c0a931f215cee683b6445e2d77677e7e75e159f78def0db09d68fafcaa6",
                 "sha256:5ec46d183433dcbd0ab716f2d7f29d8dee50505b3fdb40c6b985c7c4f5a3591f"
             ],
-
             "markers": "python_version >= '3'",
-
             "version": "==2.0.6"
         },
         "django": {
@@ -54,9 +52,7 @@
                 "sha256:14475042e284991034cb48e06f6851428fb14c4dc953acd9be9a5e95c7b6dd7a",
                 "sha256:467fbad99067910785144ce333826c71fb0e63a425657295239737f7ecd125f3"
             ],
-
             "markers": "python_version >= '3'",
-
             "version": "==3.2"
         },
         "mysql-connector-python": {
@@ -120,9 +116,7 @@
                 "sha256:6c1246513ecd5ecd4528a0906f910e8f0f9c6b8ec72030dc9fd154dc1a6efd24",
                 "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"
             ],
-
             "markers": "python_version >= '3'",
-
             "version": "==2.26.0"
         },
         "sqlparse": {
