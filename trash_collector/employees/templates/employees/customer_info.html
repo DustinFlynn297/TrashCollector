@@ -5,19 +5,55 @@
 {% block header %} Customer: {{customer.name}} {% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated %}  
-    
-    Name: {{customer.name}}
-    <br>
-    Address: {{customer.address}} {{customer.zip_code}}
-    <br>
-    Balance: ${{customer.balance}}
+{% if user.is_authenticated %}  
 
-    
+Name: {{customer.name}}
+<br>
+Address: {{customer.address}} {{customer.zip_code}}
+<br>
+Balance: ${{customer.balance}}
 
-  {% else %}
-    <p>You are at the employee index, but you are not logged in.</p>
-    <a href="{% url 'login' %}">Log In</a>
+
+  <style type="text/css">
+    /* Set the size of the div element that contains the map */
+    #map {
+      height: 400px;
+      /* The height is 400 pixels */
+      width: 80%;
+      /* The width is the width of the web page */
+    }
+  </style>
+  <script>
+    // Initialize and add the map
+    function initMap() {
+      // The location of Uluru
+      const uluru = { lat: {{customer.lat}}, lng:{{customer.lng}} };
+      // The map, centered at Uluru
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: uluru,
+      });
+      // The marker, positioned at Uluru
+      const marker = new google.maps.Marker({
+        position: uluru,
+        map: map,
+      });
+    }
+  </script>
+  <h3>My Google Maps Demo</h3>
+  <!--The div element for the map -->
+  <div id="map"></div>
+
+  <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key={KEY-HERE}=&v=weekly"
+    async
+  ></script>
+
+
+{% else %}
+<p>You are at the employee index, but you are not logged in.</p>
+<a href="{% url 'login' %}">Log In</a>
     <a href="{% url 'accounts:register' %}">Sign Up</a>
   {% endif %}
 {% endblock %}
