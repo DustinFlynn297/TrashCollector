@@ -1,53 +1,49 @@
 {% extends 'employees\employee_base.html' %}
-
 {% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
-
 {% block content %}
-  {% if user.is_authenticated %}  
-    Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee.zip_code}}
-    <br>
-    <br>
-    <h2>Scheduled Trash Pickups for {{weekday}} | {{today}} </h2>
-    <br>
-
-    <!--? Creates a table of customers with pickups scheduled -->
-    <table class="table table-hover table-dark text-center">
-      <thead>
-        <th scope="col">Customer Name</th>
-        <th scope="col">Customer Address</th>
-
-        <!-- TODO: Add customer profile -->
-        <th scope="col">Customer Info</th>
-
-        <th scope="col">Confirm Pickup</th>
-      </thead>
-      <!--? For each customer in scheduled_pickup populate row with data -->
-      <tbody>
-          {% if scheduled_pickup %}
-            <tr>{% for customer in scheduled_pickup %}</tr>
-            <td>{{customer.name}}</td>
-            <td>{{customer.address}} {{customer.zip_code}}</td>
-            <td>
-              <!-- Link to customer info -->
-              <a href="{% url 'employees:customer_info' customer.id %}">
-                <i class="fas fa-address-card fa-3x text-light"></i>
-              </a>
-            </td>
-            <td>
-              <!-- Button to confirm pickup  -->
-              <a href="{% url 'employees:trash_picked_up' customer.id %}">
-              <button type="button" class="btn btn-m btn-success">Confirm</button>
-              </a>
-            </td>
-            {% endfor %}
-          {% else %}
-            <td>N/A</td>
-            <td>No Customers Scheduled for Today</td>
-            <td>N/A</td>
-            <td>N/A</td>
-          {% endif %}
-      </tbody>
-    </table>
+{% if user.is_authenticated %}  
+Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee.zip_code}}
+<br>
+<br>
+<h2>Scheduled Trash Pickups for {{weekday}} | {{today}} </h2>
+<br>
+<!--? Creates a table of customers with pickups scheduled -->
+{% if scheduled_pickup %}
+<div class="table-responsive">
+  <table class="table table-hover table-dark text-center">
+    <thead>
+      <th scope="col">Customer Name</th>
+      <th scope="col">Customer Address</th>
+      <th scope="col">Customer Info</th>
+      <th scope="col">Confirm Pickup</th>
+    </thead>
+    <!--? For each customer in scheduled_pickup populate row with data -->
+    <tbody>
+      <tr>{% for customer in scheduled_pickup %}</tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.address}} {{customer.zip_code}}</td>
+      <td>
+        <!-- Link to customer info -->
+        <a href="{% url 'employees:customer_info' customer.id %}">
+          <i class="fas fa-address-card fa-3x text-light"></i>
+        </a>
+      </td>
+      <td>
+        <!-- Button to confirm pickup  -->
+        <a href="{% url 'employees:trash_picked_up' customer.id %}">
+        <button type="button" class="btn btn-m btn-success">Confirm</button>
+        </a>
+      </td>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<!-- TODO: Add map that loops through customers and adds a marker -->
+{% else %}
+<div class="alert alert-secondary col-8" role="alert">
+  There are no customer scheduled pickups for today.
+</div>             
+{% endif %}
     <br>
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
