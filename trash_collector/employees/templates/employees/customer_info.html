@@ -6,51 +6,78 @@
 
 {% block content %}
 {% if user.is_authenticated %}  
+{% if customer.balance <= 0 %}
+<h5><span class="badge btn bg-success">Current Balance: $ {{ customer.balance }}.00</span></h3>
+{% elif customer.balance > 0 %}
+<h5><span class="badge btn bg-warning">Current Balance: $ {{ customer.balance }}.00</span></h5>
+{% endif %}
 
-Name: {{customer.name}}
 <br>
-Address: {{customer.address}} {{customer.zip_code}}
 <br>
-Balance: ${{customer.balance}}
-
-  <style type="text/css">
-    /* Set the size of the div element that contains the map */
-    #map {
-      height: 25rem;
-      /* The height is 400 pixels */
-      width: 80%;
-      /* The width is the width of the web page */
-    }
-  </style>
-  <script>
-    // Initialize and add the map
-    function initMap() {
-      // The location of Uluru
-      const uluru = { lat: {{customer.lat}}, lng:{{customer.lng}} };
-      // The map, centered at Uluru
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
-        center: uluru,
-      });
-      // The marker, positioned at Uluru
-      const marker = new google.maps.Marker({
-        position: uluru,
-        map: map,
-      });
-    }
-  </script>
-  <!--The div element for the map -->
-  <br>
-  <br>
-  <div id="map"></div>
-
-  <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly"
-    async
-  ></script>
-
-
+<!--? Customer Info - Table for displaying customer info -->
+<div class="table-responsive">
+  <table class="table table-hover table-dark text-center caption-top">
+    <thead>
+      <th scope="col">Customer Address</th>
+      <th scope="col">Trash Pickup Preference</th>
+      <th scope="col">Date of Last Pickup</th>
+      <th scope="col">Extra Pickup</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{customer.address}} {{customer.zip_code}}</td>
+        <td>{{customer.weekly_pickup}}'s</td>
+        <!-- If true print pickup else print N/A -->
+        {% if customer.date_of_last_pickup  %}
+          <td>{{ customer.date_of_last_pickup }}</td>
+        {% else %}
+          <td>N/A</td>
+        {% endif %}
+        {% if customer.one_time_pickup  %}
+          <td>{{customer.one_time_pickup}}</td>
+        {% else %}
+          <td>N/A</td>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Styling for Google Map -->
+<style type="text/css">
+  /* Set the size of the div element that contains the map */
+  #map {
+    height: 25rem;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+  }
+</style>
+<script>
+  // Initialize and add the map
+  function initMap() {
+    // The Customer lat long
+    const customer_gmap = { lat: {{customer.lat}}, lng:{{customer.lng}} };
+    // The map, centered at customer_gmap
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 15,
+      center: customer_gmap,
+    });
+    // The marker, positioned at customer_gmap
+    const marker = new google.maps.Marker({
+      position: customer_gmap,
+      map: map,
+    });
+  }
+</script>
+<!--The div element for the map -->
+<br>
+<br>
+<div id="map" class="map-responsive iframe"></div>
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly"
+  async
+></script>
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>
 <a href="{% url 'login' %}">Log In</a>
