@@ -1,64 +1,61 @@
 {% extends 'employees\employee_base.html' %}
-
 {% block title %} GW Employee | Filter Customers {% endblock %}
-
 {% block header %} Filter Customer Scheduled Pickups by Weekday {% endblock %}
-
 {% block content %}
-  {% if user.is_authenticated %}  
-    {{ logged_in_employee.name}} | Team Zip-Code: {{logged_in_employee.zip_code}}
-    <br>
-    <br>
-    <!-- TODO: Create seperate page for filter | filtered_customers.html -->
-    <p>Please select a Weekday from the dropdown list to view customers who have pickups scheduled</p>
-    <!-- TODO: Change to dropdown instead of select -->
-    <form action="{% url 'employees:filter_by_day' %}" method='post' class="row row-cols-lg-auto g-3 align-items-center justify-content-center">
-      {% csrf_token %}
-      <div class="col-12">
-        <label for="colFormLabelSm" class="visually-hidden" form="inlineFormSelectPref"></label>
-        <select class="form-select m-2 w-auto" name="Weekday" id="inlineFormSelectPref">
-          <option selected>...</option>
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>
-          <option>Saturday</option>
-          <option>Sunday</option>
-        </select>
-      </div>
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">Filter</button>
-      </div>
-    </form>
-    <br>
-    <!--? Creates a table of customers with pickups scheduled -->
-    <table class="table table-hover table-dark text-center">
-        <thead>
-          <th scope="col">Customer Name</th>
-          <th scope="col">Customer Address</th>
-          <th scope="col">Customer Info</th>
-        </thead>
-        <!--? For each customer in scheduled_pickup populate row with data -->
-        <tbody>
-          {% if filter_customers %}
-            <tr>{% for customer in filter_customers %}</tr>
-            <td>{{customer.name}}</td>
-            <td>{{customer.address}} {{customer.zip_code}}</td>
-            <td>
-              <!-- Link to customer info -->
-              <a href="{% url 'employees:customer_info' customer.id %}">
-                <i class="fas fa-address-card fa-3x"></i>
-              </a>
-            </td>
-            {% endfor %}
-          {% else %}
-            <td>N/A</td>
-            <td>No Customers Scheduled for {{day_filter}}</td>
-            <td>N/A</td>
-          {% endif %}
-        </tbody>
-    </table>
+{% if user.is_authenticated %}  
+{{ logged_in_employee.name}} | Team Zip-Code: {{logged_in_employee.zip_code}}
+<br>
+<br>
+<form action="{% url 'employees:filter_by_day' %}" method='post' class="row row-cols-lg-auto g-3 align-items-center justify-content-center">
+  {% csrf_token %}
+  <p class="align-items-center">Select a Weekday from the dropdown list then click Filter</p>
+  <div class="col-12">
+    <label for="colFormLabelSm" class="visually-hidden" form="inlineFormSelectPref"></label>
+    <select class="form-select w-auto" name="Weekday" id="inlineFormSelectPref">
+      <option selected>...</option>
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+      <option>Saturday</option>
+      <option>Sunday</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </div>
+</form>
+<br>
+<!--? Creates a table of customers with pickups scheduled -->
+{% if filter_customers %}
+<div class="table-responsive">
+  <table class="table table-hover table-dark text-center">
+    <thead>
+      <th scope="col">Customer Name</th>
+      <th scope="col">Customer Address</th>
+      <th scope="col">Customer Info</th>
+    </thead>
+    <!--? For each customer in scheduled_pickup populate row with data -->
+    <tbody>
+      <tr>{% for customer in filter_customers %}</tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.address}} {{customer.zip_code}}</td>
+      <td>
+        <!-- Link to customer info -->
+        <a href="{% url 'employees:customer_info' customer.id %}">
+          <i class="fas fa-address-card fa-3x"></i>
+        </a>
+      </td>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="alert alert-secondary col-8" role="alert">
+  There are no customer scheduled pickups for {{day_filter}}.
+</div>     
+  {% endif %}
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
