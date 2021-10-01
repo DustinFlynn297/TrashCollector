@@ -8,9 +8,9 @@
   {% if user.is_authenticated %}
     <h4>Hello, {{ logged_in_customer.name }}<br></h4>
     {% if logged_in_customer.balance <= 0 %}
-      <h5><span class="badge bg-success">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
+      <h5><span class="badge btn bg-success">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
     {% elif logged_in_customer.balance > 0 %}
-      <h5><span class="badge bg-warning">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
+      <h5><span class="badge btn bg-warning">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
     {% endif %}
     <br>
     <!-- Display baddge w/customer balance: if $0 color green | else color warning w/balance -->
@@ -21,36 +21,38 @@
     </div>
   {% endif %}
     <!--? Edit Profile - Table for displaying customer info w/edit btn caption -->
-    <table class="table table-hover table-dark text-center caption-top">
-      <caption>
-        <a href="{% url 'customers:edit_profile' %}">
-        <button type="button" class="btn btn-lg btn-dark">Edit Profile</button>
-        </a>
-      </caption>
-      <thead>
-        <th scope="col">Your Address</th>
-        <th scope="col">Trash Pickup Preference</th>
-        <th scope="col">Date of Last Pickup</th>
-        <th scope="col">Extra Pickup</th>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{logged_in_customer.address}} {{logged_in_customer.zip_code}}</td>
-          <td>{{logged_in_customer.weekly_pickup}}'s</td>
-          <!-- If true print pickup else print N/A -->
-          {% if logged_in_customer.date_of_last_pickup  %}
-            <td>{{ logged_in_customer.date_of_last_pickup }}</td>
-          {% else %}
-            <td>N/A</td>
-          {% endif %}
-          {% if logged_in_customer.one_time_pickup  %}
-            <td>{{logged_in_customer.one_time_pickup}}</td>
-          {% else %}
-            <td>N/A</td>
-          {% endif %}
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-hover table-dark text-center caption-top">
+        <caption>
+          <a href="{% url 'customers:edit_profile' %}">
+          <button type="button" class="btn btn-lg btn-dark">Edit Profile</button>
+          </a>
+        </caption>
+        <thead>
+          <th scope="col">Your Address</th>
+          <th scope="col">Trash Pickup Preference</th>
+          <th scope="col">Date of Last Pickup</th>
+          <th scope="col">Extra Pickup</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{logged_in_customer.address}} {{logged_in_customer.zip_code}}</td>
+            <td>{{logged_in_customer.weekly_pickup}}'s</td>
+            <!-- If true print pickup else print N/A -->
+            {% if logged_in_customer.date_of_last_pickup  %}
+              <td>{{ logged_in_customer.date_of_last_pickup }}</td>
+            {% else %}
+              <td>N/A</td>
+            {% endif %}
+            {% if logged_in_customer.one_time_pickup  %}
+              <td>{{logged_in_customer.one_time_pickup}}</td>
+            {% else %}
+              <td>N/A</td>
+            {% endif %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <!-- Columns for One-Time Pickup and Suspend -->
     <div class="row">
       <div class="col">
