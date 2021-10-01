@@ -1,5 +1,7 @@
 {% extends 'employees\employee_base.html' %}
+
 {% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
+
 {% block content %}
 {% if user.is_authenticated %}  
 Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee.zip_code}}
@@ -44,10 +46,45 @@ Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee
   There are no customer scheduled pickups for today.
 </div>             
 {% endif %}
-    <br>
-  {% else %}
-    <p>You are at the employee index, but you are not logged in.</p>
-    <a href="{% url 'login' %}">Log In</a>
-    <a href="{% url 'accounts:register' %}">Sign Up</a>
-  {% endif %}
+<!-- Styling for Google Map -->
+<style type="text/css">
+  /* Set the size of the div element that contains the map */
+  #map {
+    height: 25rem;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+  }
+</style>
+<script type="text/javascript">
+  function initMap() {
+    let locations = {{ locations|safe }};
+    let mp_ctr_lat = {{map_center_lat|safe}}
+    let mp_ctr_lng = {{map_center_lng|safe}}
+
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: new google.maps.LatLng(mp_ctr_lat, mp_ctr_lng),
+    });
+
+    for (i = 0; i < locations.length; i++) {
+        let marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map
+        });
+    }
+  }
+</script>
+<!--The div element for the map -->
+<div id="map" style="padding-bottom: 140px; padding-top: 140px"></div>
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly"
+  async
+></script>
+{% else %}
+  <p>You are at the employee index, but you are not logged in.</p>
+  <a href="{% url 'login' %}">Log In</a>
+  <a href="{% url 'accounts:register' %}">Sign Up</a>
+{% endif %}
 {% endblock %}

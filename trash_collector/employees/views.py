@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.conf import settings
 import calendar
 import googlemaps
+import json
 
 
 
@@ -35,13 +36,31 @@ def index(request):
         scheduled_pickup = pickup_one_time | pickup_regular
         scheduled_pickup = scheduled_pickup.exclude (Q(suspend_start__lte=today) & Q(suspend_end__gte=today))
         scheduled_pickup = scheduled_pickup.exclude(date_of_last_pickup=today)
+
+        locations = []
+        for customer in scheduled_pickup:
+            locations.append([
+                customer.name,
+                customer.lat,
+                customer.lng,
+            ])
+        
+        map_center_lat = locations[0][1]
+        map_center_lng = locations[0][2]
+
+        api_key = settings.GOOGLE_API_KEY
+
         
 
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
             'weekday' : weekday,
-            'scheduled_pickup' : scheduled_pickup
+            'scheduled_pickup' : scheduled_pickup,
+            'locations' : json.dumps(locations),
+            'map_center_lat' : json.dumps(map_center_lat),
+            'map_center_lng' : json.dumps(map_center_lng),
+            'api_key' : api_key,
         }
         return render(request, 'employees/index.html', context)
 
