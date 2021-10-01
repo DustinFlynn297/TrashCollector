@@ -8,7 +8,7 @@
   {% if user.is_authenticated %}
     <h4>Hello, {{ logged_in_customer.name }}<br></h4>
     {% if logged_in_customer.balance <= 0 %}
-      <h5><span class="badge bg-success">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h3>
+      <h5><span class="badge bg-success">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
     {% elif logged_in_customer.balance > 0 %}
       <h5><span class="badge bg-warning">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
     {% endif %}
