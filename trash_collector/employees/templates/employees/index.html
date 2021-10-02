@@ -40,22 +40,6 @@ Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee
     </tbody>
   </table>
 </div>
-<!-- TODO: Add map that loops through customers and adds a marker -->
-{% else %}
-<div class="alert alert-secondary col-8" role="alert">
-  There are no customer scheduled pickups for today.
-</div>             
-{% endif %}
-<!-- Styling for Google Map -->
-<style type="text/css">
-  /* Set the size of the div element that contains the map */
-  #map {
-    height: 25rem;
-    /* The height is 400 pixels */
-    width: 100%;
-    /* The width is the width of the web page */
-  }
-</style>
 <script type="text/javascript">
   function initMap() {
     let locations = {{ locations|safe }};
@@ -82,6 +66,23 @@ Hello Employee {{ logged_in_employee.name}}! Team Zip-Code: {{logged_in_employee
   src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly"
   async
 ></script>
+<!-- TODO: Add map that loops through customers and adds a marker -->
+{% else %}
+<div class="alert alert-secondary col-8" role="alert">
+  There are no customer scheduled pickups for today.
+</div>             
+{% endif %}
+<!-- Styling for Google Map -->
+<style type="text/css">
+  /* Set the size of the div element that contains the map */
+  #map {
+    height: 25rem;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+  }
+</style>
+
 {% else %}
   <p>You are at the employee index, but you are not logged in.</p>
   <a href="{% url 'login' %}">Log In</a>

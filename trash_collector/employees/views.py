@@ -38,19 +38,21 @@ def index(request):
         scheduled_pickup = scheduled_pickup.exclude(date_of_last_pickup=today)
 
         locations = []
-        for customer in scheduled_pickup:
-            locations.append([
-                customer.name,
-                customer.lat,
-                customer.lng,
-            ])
-        
-        map_center_lat = locations[0][1]
-        map_center_lng = locations[0][2]
+        map_center_lat = None
+        map_center_lng = None
+        api_key = settings.GOOGLE_API_KEY    
+        if scheduled_pickup:
+            for customer in scheduled_pickup:
+                locations.append([
+                    customer.name,
+                    customer.lat,
+                    customer.lng,
+                ])
+            
+            map_center_lat = locations[0][1]
+            map_center_lng = locations[0][2]
 
-        api_key = settings.GOOGLE_API_KEY
-
-        
+                      
 
         context = {
             'logged_in_employee': logged_in_employee,
