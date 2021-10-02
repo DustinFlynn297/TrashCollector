@@ -114,3 +114,11 @@ def customer_geo(address, zip_code):
         lat = geocode_result['results'][0]['geometry']['location']['lat']
         lng = geocode_result['results'][0]['geometry']['location']['lng']
         return geocode_result, lat, lng
+
+def submit_payment(request):
+    logged_in_user = request.user
+    logged_in_customer = Customer.objects.get(user=logged_in_user)
+    if request.method == "POST":
+        logged_in_customer.balance = 0
+        logged_in_customer.save()
+        return HttpResponseRedirect('https://buy.stripe.com/test_00geWW9F8b9b5VucMM')

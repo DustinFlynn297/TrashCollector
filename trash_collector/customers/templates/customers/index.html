@@ -11,6 +11,13 @@
       <h5><span class="badge btn bg-success">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
     {% elif logged_in_customer.balance > 0 %}
       <h5><span class="badge btn bg-warning">Current Balance: $ {{ logged_in_customer.balance }}.00</span></h5>
+      <form action="{% url 'customers:submit_payment' %}" method="post" target="_blank">
+        {% csrf_token %}
+        <h5><button type="submit" class="btn btn-primary">Pay</button></h5>
+      </form>
+
+      
+        
     {% endif %}
     <br>
     <!-- Display baddge w/customer balance: if $0 color green | else color warning w/balance -->
